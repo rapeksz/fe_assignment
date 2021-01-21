@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 
@@ -9,6 +10,8 @@ class CommentsController extends Controller
 {
     public function index()
     {
-        return response()->json('here must be list of comments');
+        $posts = Comment::with('childrenRecursive')->whereNull('parent_id')->get();
+
+        return response()->json($posts);
     }
 }
