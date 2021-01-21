@@ -13,6 +13,10 @@
         </div>
 
         <ul>
+            <li v-for="item in posts">{{ item.body }}</li>
+        </ul>
+
+        <ul>
             <li>
                 <div class="comment-box">
                     <div class="comment-head">
@@ -94,6 +98,22 @@
 </template>
 
 <script>
+    function Post({ id, body }) {
+        this.id = id;
+        this.body = body;
+        this.children_recursive = [];
+    }
+
+    function buildPosts(data) {
+        let post = new Post(data);
+        let children = data.children_recursive;
+        if (children.length) {
+            children.forEach(child => post.children_recursive.push(buildPosts(child)));
+        }
+
+        return post;
+    }
+
     export default {
         data() {
             return {
@@ -101,11 +121,14 @@
             }
         },
         methods: {
-
+            async read() {
+                this.axios.get('/api/comments').then((response) => {
+                    response.data.forEach(post => this.posts.push(buildPosts(post)));
+                });
+            }
         },
         mounted() {
-            this.axios
-                .get('/api/comments');
+            this.read();
         },
     }
 </script>
