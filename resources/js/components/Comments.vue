@@ -12,78 +12,7 @@
                 Also, don't forget to add some styles to make it looks better.</p>
         </div>
 
-        <ul>
-            <li v-for="item in posts">{{ item.body }}</li>
-        </ul>
-
-        <ul>
-            <li>
-                <div class="comment-box">
-                    <div class="comment-head">
-                        <span class="date">2021-01-01</span>
-                        <span class="separator">|</span>
-                        <span class="author">Author Name</span>
-                    </div>
-                    <div class="comment-body">
-                        <strong>COMMENT 1.</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ullamcorper tristique molestie.
-                    </div>
-                    <div class="comment-footer">
-                        <button class="btn btn-sm btn-primary">Reply</button>
-                    </div>
-                </div>
-
-                <ul>
-                    <li>
-                        <div class="comment-box">
-                            <div class="comment-head">
-                                <span class="date">2021-01-01</span>
-                                <span class="separator">|</span>
-                                <span class="author">Author Name</span>
-                            </div>
-                            <div class="comment-body">
-                                <strong>COMMENT 1.1</strong> Duis eu lectus lectus. Quisque erat tortor, ultricies a libero vitae, malesuada ultricies sem.
-                            </div>
-                            <div class="comment-footer">
-                                <button class="btn btn-sm btn-primary">Reply</button>
-                            </div>
-                        </div>
-
-                        <ul>
-                            <li>
-                                <div class="comment-box">
-                                    <div class="comment-head">
-                                        <span class="date">2021-01-01</span>
-                                        <span class="separator">|</span>
-                                        <span class="author">Author Name</span>
-                                    </div>
-                                    <div class="comment-body">
-                                        <strong>COMMENT 1.1.1</strong> Duis eu lectus lectus. Quisque erat tortor, ultricies a libero vitae, malesuada ultricies sem.
-                                    </div>
-                                    <div class="comment-footer">
-                                        <button class="btn btn-sm btn-primary">Reply</button>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="comment-box">
-                            <div class="comment-head">
-                                <span class="date">2021-01-01</span>
-                                <span class="separator">|</span>
-                                <span class="author">Author Name</span>
-                            </div>
-                            <div class="comment-body">
-                                <strong>COMMENT 1.2</strong> Aenean molestie, magna eget interdum mattis, ipsum mi ultricies mauris, vitae euismod dolor enim sed turpis.
-                            </div>
-                            <div class="comment-footer">
-                                <button class="btn btn-sm btn-primary">Reply</button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <tree :tree-data="posts"></tree>
 
         <form>
             <div class="mb-3">
@@ -98,9 +27,11 @@
 </template>
 
 <script>
-    function Post({ id, body }) {
+    import Tree from "./Tree";
+    function Post({ id, body, created_at }) {
         this.id = id;
         this.body = body;
+        this.created_at = created_at;
         this.children_recursive = [];
     }
 
@@ -115,6 +46,7 @@
     }
 
     export default {
+        components: {Tree},
         data() {
             return {
                 posts: []
