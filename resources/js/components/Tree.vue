@@ -13,6 +13,7 @@
 import NodeTree from "./NodeTree";
 
 export default {
+    name: "tree",
     props: {
         treeData: Array
     },
