@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('comments', 'CommentsController@index');
+Route::resource('comments', 'Api\CommentsController')->only('index');

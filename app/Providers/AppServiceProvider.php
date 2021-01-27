@@ -2,10 +2,19 @@
 
 namespace App\Providers;
 
+use App\Services\Comment\CommentManager;
+use App\Services\Comment\CommentManagerContract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array|string[]
+     */
+    private static $services = [
+        CommentManagerContract::class => CommentManager::class,
+    ];
+
     /**
      * Register any application services.
      *
@@ -13,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerServices();
     }
 
     /**
@@ -24,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    private function registerServices(): void
+    {
+        foreach (self::$services as $abstract => $concrete) {
+            $this->app->bind($abstract, $concrete);
+        }
     }
 }
