@@ -1,9 +1,9 @@
 <template>
     <ul>
         <node-tree
-            v-for="(node, key) in treeData"
-            :node="node"
-            :key="key"
+            v-for="node in treeData"
+            v-bind:node="node"
+            v-bind:key="node.id"
         >
         </node-tree>
     </ul>

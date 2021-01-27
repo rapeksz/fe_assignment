@@ -8,18 +8,21 @@
 <script>
     import Tree from "./Tree";
     import Reply from "./Reply";
-    function Post({ id, body, created_at }) {
+    function Post({ id, index, parent_id, body, created_at }) {
         this.id = id;
+        this.index = index;
+        this.parent_id = parent_id;
         this.body = body;
         this.created_at = created_at;
         this.children_recursive = [];
     }
 
-    function buildPosts(data) {
-        let post = new Post(data);
-        let children = data.children_recursive;
+    function buildPosts(data, index) {
+        const post = new Post(data);
+        post.index = index;
+        const children = data.children_recursive;
         if (children.length) {
-            children.forEach(child => post.children_recursive.push(buildPosts(child)));
+            children.forEach((child, key) => post.children_recursive.push(buildPosts(child, post.index + '.' + (key + 1))));
         }
 
         return post;
@@ -35,7 +38,7 @@
         methods: {
             async read() {
                 this.axios.get('/api/comments').then((response) => {
-                    response.data.forEach(post => this.posts.push(buildPosts(post)));
+                    response.data.forEach((post, index) => this.posts.push(buildPosts(post, index + 1)));
                 });
             }
         },

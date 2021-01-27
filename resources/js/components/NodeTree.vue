@@ -7,7 +7,7 @@
                 <span class="author">Author Name</span>
             </div>
             <div class="comment-body">
-                <strong>COMMENT 1.1.1</strong> {{ node.body }}
+                <strong>COMMENT {{ node.index }} </strong> {{ node.body }}
             </div>
             <div class="comment-footer">
                 <button class="btn btn-sm btn-primary" v-on:click="showReplyBox">Reply</button>
@@ -17,10 +17,11 @@
         </div>
         <ul v-if="node.children_recursive && node.children_recursive.length">
             <node
-                v-for="(child, key) in node.children_recursive"
-                :node="child"
-                :key="key"
-            ></node>
+                v-for="child in node.children_recursive"
+                v-bind:node="child"
+                v-bind:key="child.id"
+            >
+            </node>
         </ul>
     </li>
 </template>
@@ -33,12 +34,12 @@ export default {
     components: {
         Reply
     },
-    data () {
+    data() {
         return {
             showBox: false
         }
     },
-    created () {
+    created() {
         this.$root.$on('hideReplyBox', () => this.hideReplyBox());
     },
     methods: {
