@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\DTO\Comment;
 
 interface CommentRepository
 {
@@ -26,10 +27,10 @@ interface CommentRepository
     public function removeById(int $id): void;
 
     /**
-     * @param  Model  $model
+     * @param  Comment  $comment
      * @return Model
      */
-    public function create(Model $model): Model;
+    public function create(Comment $comment): Model;
 
     /**
      * @param  Model  $model

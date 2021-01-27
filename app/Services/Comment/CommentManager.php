@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Comment;
 
+use App\DTO\Comment;
 use App\Repositories\CommentRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class CommentManager implements CommentManagerContract
 {
@@ -31,6 +33,15 @@ class CommentManager implements CommentManagerContract
         $comments = $this->commentRepository->findAll();
 
         return $this->aggregate($comments);
+    }
+
+    /**
+     * @param  Comment  $comment
+     * @return Model
+     */
+    public function create(Comment $comment): Model
+    {
+        return $this->commentRepository->create($comment);
     }
 
     /**

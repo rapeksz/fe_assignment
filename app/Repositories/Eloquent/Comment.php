@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Eloquent;
 
 use Exception;
+use App\DTO\Comment as CommentDto;
 use App\Repositories\CommentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -53,12 +54,17 @@ class Comment implements CommentRepository
     }
 
     /**
-     * @param  Model  $model
+     * @param  CommentDto  $comment
      * @return Model
      */
-    public function create(Model $model): Model
+    public function create(CommentDto $comment): Model
     {
-        return $this->newQuery()->create($model);
+        return $this->newQuery()->create(
+            [
+                'parent_id' => $comment->getParentId(),
+                'body' => $comment->getBody(),
+            ]
+        );
     }
 
     /**
