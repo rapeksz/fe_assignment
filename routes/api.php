@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('comments', 'Api\CommentsController')->only('index');
+Route::resource('comments', 'Api\CommentsController')->only(['index', 'store']);
