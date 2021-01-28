@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Comment;
+use App\DTO\Comment;
 use App\Services\Comment\CommentManagerContract;
 use App\Http\Requests\Comment\StoreComment;
 use Illuminate\Http\JsonResponse;
@@ -31,11 +31,11 @@ class CommentsController extends ApiController
      */
     public function store(StoreComment $request, CommentManagerContract $comment): JsonResponse
     {
-        $commentDto = \App\DTO\Comment::fromRequest($request);
+        $commentDto = Comment::fromRequest($request);
         try {
             $newComment = $comment->create($commentDto);
 
-            return $this->response->json($newComment, JsonResponse::HTTP_OK);
+            return $this->response->json($newComment, JsonResponse::HTTP_CREATED);
         } catch (Exception $e) {
             return $this->response->json(['message' => $e->getMessage()], JsonResponse::HTTP_NOT_FOUND);
         }
