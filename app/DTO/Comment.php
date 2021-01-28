@@ -31,15 +31,15 @@ class Comment implements Dto, CanReadFromRequest
     public static function fromRequest(Request $request): CanReadFromRequest
     {
         return new self(
-            (int) $request->input('parent_id'),
+            $request->input('parent_id'),
             (string) $request->input('body')
         );
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getParentId(): int
+    public function getParentId(): ?int
     {
         return $this->parentId;
     }

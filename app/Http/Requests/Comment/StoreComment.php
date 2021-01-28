@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Comment;
 
+use App\Rules\CreateComment;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -18,7 +19,7 @@ class StoreComment extends FormRequest
     public function rules()
     {
         return [
-            'parent_id' => ['required', 'integer', Rule::exists('comments', 'id')],
+            'parent_id' => new CreateComment(),
             'body' => ['required', 'string'],
         ];
     }

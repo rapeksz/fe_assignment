@@ -10,10 +10,9 @@
                 <strong>COMMENT {{ node.index }} </strong> {{ node.body }}
             </div>
             <div class="comment-footer">
-                <button class="btn btn-sm btn-primary" v-on:click="showReplyBox">Reply</button>
+                <button class="btn btn-sm btn-primary" v-on:click="showReplyBox(node.id)">Reply</button>
             </div>
-
-            <reply ref="boxComponent" v-if="showBox"/>
+            <reply ref="boxComponent" v-if="box.visible"/>
         </div>
         <ul v-if="node.children_recursive && node.children_recursive.length">
             <node
@@ -36,7 +35,10 @@ export default {
     },
     data() {
         return {
-            showBox: false
+            box: {
+                visible: false,
+                parentId: null
+            }
         }
     },
     created() {
@@ -44,11 +46,13 @@ export default {
     },
     methods: {
         hideReplyBox() {
-            this.showBox = false;
+            this.box.visible = false;
+            this.box.parentId = null;
         },
-        showReplyBox() {
+        showReplyBox(parentId) {
             this.$root.$emit('hideReplyBox');
-            this.showBox = true;
+            this.box.visible = true;
+            this.box.parentId = parentId;
         }
     },
     props: {
