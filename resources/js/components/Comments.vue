@@ -35,11 +35,18 @@
                 posts: []
             }
         },
+        created() {
+            this.$root.$on('commentAdded', () => this.refreshPosts());
+        },
         methods: {
             async read() {
                 this.axios.get('/api/comments').then((response) => {
                     response.data.forEach((post, index) => this.posts.push(buildPosts(post, index + 1)));
                 });
+            },
+            refreshPosts() {
+                this.posts = [];
+                this.read();
             }
         },
         mounted() {
