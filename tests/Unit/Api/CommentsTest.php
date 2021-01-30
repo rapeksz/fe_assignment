@@ -44,42 +44,33 @@ class CommentsTest extends TestCase
 
     public function testCreateComment()
     {
-        $commentDtoMock = Mockery::mock(Comment::class);
-        $requestMock = Mockery::mock(StoreComment::class);
-        $commentModelMock = Mockery::mock(StoreComment::class);
+        $commentModelMock = Mockery::mock(Model::class);
 
-        //TODO: does not mocking fromRequest method properly
-//        $requestMock->shouldReceive('input')
-//            ->with(['parent_id'])
-//            ->once()
-//            ->andReturn([1]);
+        $requestData = [
+            'parent_id' => 1,
+            'body' => 'test',
+        ];
 
-        $requestMock->shouldReceive('passes')
+        $commentModelMock->shouldReceive('toJson')
             ->once()
-            ->andReturn(true);
-
-        $commentDtoMock->shouldReceive('fromRequest')
-            ->with([$requestMock])
-            ->once()
-            ->andReturn($commentDtoMock);
+            ->andReturn(json_encode($requestData));
 
         $this->commentManagerMock
             ->shouldReceive('create')
-            ->with([$commentDtoMock])
             ->once()
             ->andReturn($commentModelMock);
 
         $this->app->instance(Model::class, $commentModelMock);
-        $this->app->instance(StoreComment::class, $requestMock);
-        $this->app->instance(Comment::class, $commentDtoMock);
 
         $response = $this->withHeaders(
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ]
-        )->post(
-            '/api/comments'
+        )->json(
+            'POST',
+            '/api/comments',
+            $requestData
         );
 
         $response->assertStatus(JsonResponse::HTTP_CREATED);
