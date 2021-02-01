@@ -25,3 +25,7 @@ php artisan db:seed --class=CommentSeeder
 ```
 4. in the browser navigate to `http://127.0.0.1:8000/`
 5. in order to go into dev-mode run `npm run watch`
+
+### Tests
+1. Go to container by running ``` docker exec -it assignment-php-fpm bash ``` and run:
+``` vendor/bin/phpunit ```
